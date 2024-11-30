@@ -4,10 +4,9 @@ import com.thedevhorse.domainevent.domain.Order;
 
 import java.util.UUID;
 
-public record OrderMessage(UUID citizenId) {
+public record OrderMessage(UUID orderId) {
 
-    public static OrderMessage of(Order order) {
+    public static OrderMessage message(Order order) {
         return new OrderMessage(order.orderId());
     }
 }
-
