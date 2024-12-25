@@ -2,7 +2,7 @@ package com.thedevhorse.domainevent.messaging;
 
 import com.thedevhorse.domainevent.domain.DomainEvent;
 
-public interface OrderMessagePublisher {
+public interface MessagePublisher {
 
-    void producer(DomainEvent domainEvent);
+    void publisher(DomainEvent domainEvent);
 }
