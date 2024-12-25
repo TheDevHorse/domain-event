@@ -25,6 +25,7 @@ class DomainEventApplicationTests {
 
     @Test
     void givenOrderCreatedEvent_whenOrderMessageIsCalled_ThenMessageIsPublished(){
+        //TODO in progress
         messagePublisher.publisher(new OrderCreated(null, null, null));
         Message<byte[]> result = outputDestination.receive(100, "test-destination");
         assertThat(result).isNotNull();
