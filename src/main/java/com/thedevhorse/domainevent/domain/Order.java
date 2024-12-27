@@ -9,4 +9,12 @@ public class Order {
     public UUID orderId() {
         return orderId;
     }
+
+    private Order(final UUID orderId) {
+        this.orderId = orderId;
+    }
+
+    public static Order create(final UUID orderId) {
+        return new Order(orderId);
+    }
 }
