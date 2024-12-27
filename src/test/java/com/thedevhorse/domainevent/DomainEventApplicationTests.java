@@ -1,9 +1,7 @@
 package com.thedevhorse.domainevent;
 
 import com.thedevhorse.domainevent.domain.Order;
-import com.thedevhorse.domainevent.domain.event.OrderCreated;
-import com.thedevhorse.domainevent.domain.event.OrderMessage;
-import com.thedevhorse.domainevent.messaging.MessagePublisher;
+import com.thedevhorse.domainevent.service.OrderService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
@@ -12,9 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,35 +21,31 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DomainEventApplicationTests {
 
     @Autowired
-    MessagePublisher messagePublisher;
+    OrderService orderService;
 
     @Test
-    void givenOrderCreatedEvent_whenOrderMessageIsCalled_ThenMessageIsPublished() {
+    void givenOrder_whenCreateOrderIsCalled_ThenOrderCreatedMessageIsPublished() {
         // Given
-        UUID orderId = UUID.randomUUID();
-
-        OrderCreated orderCreated = new OrderCreated(
-                orderId,
-                OrderMessage.message(Order.create(orderId)),
-                Instant.now()
-        );
+        Order order = Order.create(UUID.randomUUID());
 
         // When
-        messagePublisher.publisher(orderCreated);
+        orderService.createOrder(order);
 
         // Then
-        String kafkaHost = "PLAINTEXT_HOST://localhost:9092";
+        try (KafkaConsumer<String, String> consumer = createKafkaConsumer("order-created")) {
+            ConsumerRecords<String, String> result = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(10));
+            assertThat(result.count()).isPositive();
+        }
+    }
 
-        Map<String, Object> consumerProps = new HashMap<>(KafkaTestUtils.consumerProps(kafkaHost, "1", "true"));
-
+    private KafkaConsumer<String, String> createKafkaConsumer(String topic) {
+        Map<String, Object> consumerProps = KafkaTestUtils.consumerProps(
+                "PLAINTEXT_HOST://localhost:9092",
+                "1",
+                "true"
+        );
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps);
-        consumer.subscribe(Collections.singletonList("order-created"));
-
-        ConsumerRecords<String, String> result = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(10));
-
-        assertThat(result.count()).isPositive();
-
-        consumer.close();
-
+        consumer.subscribe(Collections.singletonList(topic));
+        return consumer;
     }
 }
