@@ -4,19 +4,12 @@ import com.thedevhorse.domainevent.domain.Order;
 import com.thedevhorse.domainevent.domain.event.OrderCreated;
 import com.thedevhorse.domainevent.domain.event.OrderMessage;
 import com.thedevhorse.domainevent.messaging.MessagePublisher;
-import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.ClassRule;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.EmbeddedKafkaKraftBroker;
-import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -58,8 +51,7 @@ class DomainEventApplicationTests {
 
         ConsumerRecords<String, String> result = KafkaTestUtils.getRecords(consumer, Duration.ofSeconds(10));
 
-
-        assertThat(result.count()).isGreaterThan(0);
+        assertThat(result.count()).isPositive();
 
         consumer.close();
 
