@@ -1,6 +1,7 @@
 package com.thedevhorse.domainevent;
 
 import com.thedevhorse.domainevent.domain.Order;
+import com.thedevhorse.domainevent.domain.Status;
 import com.thedevhorse.domainevent.service.OrderService;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -26,7 +27,10 @@ class DomainEventApplicationTests {
     @Test
     void givenOrder_whenCreateOrderIsCalled_ThenOrderCreatedMessageIsPublished() {
         // Given
-        Order order = Order.create(UUID.randomUUID());
+        Order order = Order.create(
+                UUID.randomUUID(),
+                Status.IN_PROGRESS
+        );
 
         // When
         orderService.createOrder(order);

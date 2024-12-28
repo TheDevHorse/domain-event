@@ -6,15 +6,28 @@ public class Order {
 
     private UUID orderId;
 
+    private Status status;
+
+    private Order(UUID orderId,
+                  Status status) {
+        this.orderId = orderId;
+        this.status = status;
+    }
+
+    public static Order create(final UUID orderId,
+                               final Status status) {
+        return new Order(
+                orderId,
+                status
+        );
+    }
+
     public UUID orderId() {
         return orderId;
     }
 
-    private Order(final UUID orderId) {
-        this.orderId = orderId;
+    public Status status() {
+        return status;
     }
 
-    public static Order create(final UUID orderId) {
-        return new Order(orderId);
-    }
 }

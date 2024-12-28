@@ -1,7 +1,5 @@
 package com.thedevhorse.domainevent.domain.event;
 
-import com.thedevhorse.domainevent.domain.DomainEvent;
-
 import java.time.Instant;
 import java.util.UUID;
 

@@ -1,4 +1,4 @@
-package com.thedevhorse.domainevent.domain;
+package com.thedevhorse.domainevent.domain.event;
 
 
 import java.io.Serializable;

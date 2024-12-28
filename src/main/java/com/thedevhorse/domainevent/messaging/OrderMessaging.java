@@ -1,6 +1,6 @@
 package com.thedevhorse.domainevent.messaging;
 
-import com.thedevhorse.domainevent.domain.DomainEvent;
+import com.thedevhorse.domainevent.domain.event.DomainEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
