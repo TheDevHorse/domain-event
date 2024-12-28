@@ -1,6 +1,7 @@
 package com.thedevhorse.domainevent.controller;
 
 import com.thedevhorse.domainevent.domain.Order;
+import com.thedevhorse.domainevent.domain.Status;
 import com.thedevhorse.domainevent.service.OrderService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,10 @@ public class OrderController {
     @PostMapping
     public void createOrder() {
         orderService.createOrder(
-                Order.create(UUID.randomUUID())
+                Order.create(
+                        UUID.randomUUID(),
+                        Status.IN_PROGRESS
+                )
         );
     }
 }
