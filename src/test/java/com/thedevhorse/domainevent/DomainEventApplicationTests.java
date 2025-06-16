@@ -25,7 +25,7 @@ class DomainEventApplicationTests {
     OrderService orderService;
 
     @Test
-    void givenOrder_whenCreateOrderIsCalled_ThenOrderCreatedMessageIsPublished() {
+    void givenOrder_whenCreateOrderIsCalled_thenOrderCreatedMessageIsPublished() {
         // Given
         Order order = Order.create(
                 UUID.randomUUID(),
